@@ -1,26 +1,32 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+@layer components {
+  .center {
+    @apply flex justify-center items-center;
   }
-  body {
-    color: white;
-    background: black;
+  .between {
+    @apply flex justify-between items-center;
+  }
+  .link {
+    @apply transition-all ease-linear py-1 px-2 rounded-md hover:bg-hover-primary;
+  }
+  .label {
+    @apply absolute top-[-5px] text-sm right-[-40px] text-white bg-green-500 rounded-full py-0 px-3 z-10;
+  }
+  .gray-title {
+    @apply text-lg font-bold text-text-gray;
+  }
+  .horizontal-items {
+    @apply flex justify-between max-w-xs py-5;
   }
 }
