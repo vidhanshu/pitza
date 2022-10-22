@@ -1,11 +1,11 @@
 import Image from "next/image";
 import React from "react";
-import Section from "../components/Section";
+// import Section from "../components/Section";
 import { CART } from "../constants";
 import PriceCard from "../components/priceCard";
 function Cart(props) {
   return (
-    <Section>
+    <div className="py-10 max-w-6xl m-auto block">
       <div className="flex px-2 min-h-96 flex-col gap-5 lg:flex-row">
         <div className="flex-2 px-5 overflow-auto">
           <table className="w-[100%] text-center">
@@ -50,7 +50,7 @@ function Cart(props) {
         </div>
         <PriceCard {...props.quotation} btnTitle="CHECKOUT NOW" />
       </div>
-    </Section>
+    </div>
   );
 }
 

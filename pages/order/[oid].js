@@ -1,7 +1,7 @@
 import React from "react";
 import PriceCard from "../../components/priceCard";
 import { ORDERS, ORDER_STATUS } from "../../constants";
-import Section from "../../components/Section";
+// import Section from "../../components/Section";
 import Image from "next/image";
 import styles from "./style.module.css";
 const Index = (props) => {
@@ -19,7 +19,7 @@ const Index = (props) => {
   };
 
   return (
-    <Section>
+    <div className="py-10 max-w-6xl m-auto block">
       <div className="flex  justify-center p-2 lg:flex-row flex-col">
         <div className="flex-1 flex flex-col gap-10 p-5 overflow-auto">
           <table>
@@ -63,7 +63,7 @@ const Index = (props) => {
         </div>
         <PriceCard {...props.quotation} btnTitle="PAY NOW" />
       </div>
-    </Section>
+    </div>
   );
 };
 
