@@ -22,7 +22,7 @@ const Featured = () => {
   return (
     <div className={styles.container}>
       <div
-        className={`${styles.arrowContainer} link`}
+        className={`${styles.arrowContainer}`}
         style={{ left: 10 }}
         onClick={() => handleArrow("l")}
       >
@@ -34,12 +34,12 @@ const Featured = () => {
       >
         {CAROUSEL_IMAGES.map((img, i) => (
           <div className={styles.imgContainer} key={i}>
-            <Image src={img} alt="" layout="fill" objectFit="contain" />
+            <Image priority src={img} alt="" layout="fill" objectFit="contain" />
           </div>
         ))}
       </div>
       <div
-        className={`${styles.arrowContainer} link`}
+        className={`${styles.arrowContainer}`}
         style={{ right: 10 }}
         onClick={() => handleArrow("r")}
       >

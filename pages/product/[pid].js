@@ -112,7 +112,7 @@ const PizzaSize = ({ setSize }) => (
 );
 
 const Quantity = ({ setQty, qty }) => (
-  <div>
+  <div className="gap-5 flex items-center">
     <label>
       <input
         className=" w-16 select-none pl-2 text-black transition-all outline-2 outline-gray-500 focus:border-none outline-none focus:outline-3 focus:outline-blue-600 rounded-md"
@@ -128,6 +128,7 @@ const Quantity = ({ setQty, qty }) => (
       />
       &nbsp; Quantity
     </label>
+    <button className="m-0 btn-primary">CHECKOUT</button>
   </div>
 );
 const PizzaToppinsOption = ({ setExtra }) => (
@@ -173,7 +174,6 @@ const PizzaToppinsOption = ({ setExtra }) => (
 export default Index;
 
 export async function getStaticProps(context) {
-  console.log(context.params);
   return {
     props: {
       product: {

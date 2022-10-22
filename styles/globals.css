@@ -10,6 +10,13 @@
   font-family: "Roboto", sans-serif;
 }
 
+td,th,tr{
+  padding: 0.5rem;
+}
+tr:nth-child(even){
+  background: rgba(0,0,0,0.08);
+}
+
 @layer components {
   .center {
     @apply flex justify-center items-center;
@@ -27,6 +34,15 @@
     @apply text-lg font-bold text-text-gray;
   }
   .horizontal-items {
-    @apply flex justify-between max-w-xs py-5;
+    @apply flex justify-between max-w-xs py-5 flex-col sm:flex-row md:flex-col lg:flex-row items-start;
+  }
+  .btn-primary {
+    @apply m-auto block px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-800 text-white;
+  }
+  .btn-danger {
+    @apply m-auto block px-2 py-1 rounded-md bg-red-600 text-white hover:bg-red-800;
+  }
+  .btn-green {
+    @apply m-auto block px-2 py-1 rounded-md bg-green-600 text-white hover:bg-green-800;
   }
 }
