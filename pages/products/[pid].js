@@ -1,25 +1,26 @@
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
+
+import Image from "next/image";
 import Toppins from "../../components/toppins";
+import { addProduct } from "../../redux/cartSlice";
+import axios from "../../helpers/axios";
+import { useDispatch } from "react-redux";
+
 const Index = ({ product }) => {
-  const { img, title, price: p, desciption } = product;
+  const { img, title, prices: p, desciption, toppins } = product;
   const [size, setSize] = useState(1);
-  const [price, setPrice] = useState(p);
+  const [price, setPrice] = useState(p[0]);
   const [qty, setQty] = useState(1);
-  const [extra, setExtra] = useState({
-    sauce: false,
-    chees: false,
-    mushroom: false,
-    pepperoni: false,
-  });
+
+  const [extra, setExtra] = useState([]);
+
+  const dispatch = useDispatch();
 
   const getExtraPrice = () => {
     let extraPrice = 0;
-    for (const key in extra) {
-      if (extra[key]) {
-        extraPrice += 10;
-      }
-    }
+    extra.forEach((item) => {
+      extraPrice += item.price;
+    });
     return extraPrice;
   };
 
@@ -50,6 +51,25 @@ const Index = ({ product }) => {
     setPrice(calc);
   };
 
+  const handleClick = () => {
+    dispatch(addProduct({ ...product, price, qty, size, extra }));
+    console.log("clicked");
+  };
+
+  const handleToppins = ({ event, data }) => {
+    if (event.target.checked) {
+      setExtra((e) => [
+        ...e,
+        {
+          text: data.text,
+          price: data.price,
+        },
+      ]);
+    } else {
+      setExtra((e) => e.filter((e) => e.text !== data.text));
+    }
+  };
+
   useEffect(() => {
     getPrice();
   }, [size, qty, extra]);
@@ -65,12 +85,16 @@ const Index = ({ product }) => {
       <div className="flex-1 p-10">
         <div className="flex flex-col gap-3">
           <h1 className="text-3xl font-bold">{title}</h1>
-          <h1 className="text-primary font-semibold">{price}/- INR</h1>
+          <h1 className="text-primary font-semibold">₹{price}/- INR</h1>
           <p className="text-text-gray max-w-md">{desciption}</p>
         </div>
         <PizzaSize setSize={setSize} />
-        <PizzaToppinsOption setExtra={setExtra} />
-        <Quantity qty={qty} setQty={setQty} />
+        <PizzaToppinsOption
+          handleToppins={handleToppins}
+          toppins={toppins}
+          setExtra={setExtra}
+        />
+        <Quantity handleClick={handleClick} qty={qty} setQty={setQty} />
       </div>
     </div>
   );
@@ -111,7 +135,7 @@ const PizzaSize = ({ setSize }) => (
   </div>
 );
 
-const Quantity = ({ setQty, qty }) => (
+const Quantity = ({ setQty, qty, handleClick }) => (
   <div className="gap-5 flex items-center">
     <label>
       <input
@@ -128,73 +152,42 @@ const Quantity = ({ setQty, qty }) => (
       />
       &nbsp; Quantity
     </label>
-    <button className="m-0 btn-primary">CHECKOUT</button>
+    <button className="m-0 btn-primary" onClick={handleClick}>
+      ADD TO CART
+    </button>
   </div>
 );
-const PizzaToppinsOption = ({ setExtra }) => (
+
+const PizzaToppinsOption = ({ toppins, setExtra, handleToppins }) => (
   <div>
     <h1 className="gray-title">Choose Additional Ingredients</h1>
     <div className="horizontal-items max-w-md select-none">
-      <label className="flex justify-center items-center cursor-pointer">
-        <input
-          onChange={() => setExtra((e) => ({ ...e, sauce: !e.sauce }))}
-          className="w-5 h-5"
-          type="checkbox"
-        />
-        &nbsp; Sauce
-      </label>
-      <label className="flex justify-center items-center cursor-pointer">
-        <input
-          onChange={() => setExtra((e) => ({ ...e, pepperoni: !e.pepperoni }))}
-          className="w-5 h-5"
-          type="checkbox"
-        />
-        &nbsp; Pepperoni
-      </label>
-      <label className="flex justify-center items-center cursor-pointer">
-        <input
-          onChange={() => setExtra((e) => ({ ...e, mushroom: !e.mushroom }))}
-          className="w-5 h-5"
-          type="checkbox"
-        />
-        &nbsp; Mushroom
-      </label>
-      <label className="flex justify-center items-center cursor-pointer">
-        <input
-          onChange={() => setExtra((e) => ({ ...e, chees: !e.chees }))}
-          className="w-5 h-5"
-          type="checkbox"
-        />
-        &nbsp; Chees
-      </label>
+      {toppins.map(({ _id, text, price }) => (
+        <label
+          key={_id}
+          className="flex justify-center items-center cursor-pointer"
+        >
+          <input
+            className="w-5 h-5"
+            type="checkbox"
+            onChange={(e) => handleToppins({ event: e, data: { text, price } })}
+          />
+          &nbsp; {text}
+        </label>
+      ))}
     </div>
   </div>
 );
 
 export default Index;
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
+  const { pid } = context.params;
+  console.log("called");
+  const res = await axios.get(`/products/${pid}`);
   return {
     props: {
-      product: {
-        img: "/img/pizza.png",
-        title: "CAMPLOGANIA",
-        desciption:
-          "Lorem ipsum desciption desciption desciption desciption desciption Lorem ipsum desciption desciption desciption desciption desciption",
-        price: "399",
-      },
+      product: res.data,
     },
-    revalidate: 10,
-  };
-}
-
-export async function getStaticPaths() {
-  return {
-    paths: [
-      {
-        params: { pid: "1" },
-      },
-    ],
-    fallback: false,
   };
 }

@@ -1,6 +1,14 @@
 import React from "react";
 
-const PriceCard = ({ subtotal, delivery, discount, btnTitle }) => {
+const PriceCard = ({
+  payBtn,
+  onClick,
+  subtotal,
+  delivery,
+  discount,
+  btnTitle,
+  children,
+}) => {
   return (
     <div className="flex-1 flex justify-center items-center">
       <div className="w-full bg-black text-white lg:max-w-xs p-2 rounded-md  shadow-xl">
@@ -28,7 +36,16 @@ const PriceCard = ({ subtotal, delivery, discount, btnTitle }) => {
               </tr>
             </tbody>
           </table>
-          <button className="btn-primary mt-5">{btnTitle}</button>
+          {payBtn ? (
+            <button onClick={() => {}} className="btn-primary mt-5">
+              CASH ON DELIVERY
+            </button>
+          ) : (
+            <button onClick={onClick} className="btn-primary mt-5">
+              {btnTitle}
+            </button>
+          )}
+          {children}
         </div>
       </div>
     </div>

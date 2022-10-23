@@ -1,7 +1,8 @@
+import axios from "../helpers/axios";
 import Head from "next/head";
 import Featured from "../components/featured";
 import PizzaList from "../components/pizzaList";
-export default function Home() {
+export default function Home({ products }) {
   return (
     <div className={``}>
       <Head>
@@ -10,7 +11,24 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Featured />
-      <PizzaList />
+      <PizzaList pizzaList={products} />
     </div>
   );
 }
+
+export const getServerSideProps = async () => {
+  try {
+    const { data } = await axios.get("/products");
+    return {
+      props: {
+        products: data,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        products: [],
+      },
+    };
+  }
+};

@@ -1,14 +1,15 @@
 import Image from "next/image";
 import React from "react";
-const Toppins = ({ extra,getSize }) => {
+const Toppins = ({ extra = [], getSize }) => {
+
   return (
     <>
-      {extra.chees && (
+      {extra.some((e) => e.text === "chees") && (
         <div className="absolute top-[10%] left-[10%]">
           <Image alt="" src="/img/chees.png" width={100} height={100} />
         </div>
       )}
-      {extra.pepperoni && (
+      {extra.some((e) => e.text === "pepperoni") && (
         <div className="absolute top-[10%] left-[10%]">
           <Image
             alt=""
@@ -18,7 +19,7 @@ const Toppins = ({ extra,getSize }) => {
           />
         </div>
       )}
-      {extra.mushroom && (
+      {extra.some((e) => e.text === "mushroom") && (
         <div className="absolute top-[10%] left-[10%]">
           <Image
             alt=""
@@ -28,7 +29,7 @@ const Toppins = ({ extra,getSize }) => {
           />
         </div>
       )}
-      {extra.sauce && (
+      {extra.some((e) => e.text === "sauce") && (
         <div className="absolute right-[-10%] top-0">
           <Image alt="" src="/img/sauce.png" width={200} height={100} />
         </div>

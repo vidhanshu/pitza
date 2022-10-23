@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaBars } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { NAVBAR } from "../../constants";
 const Navbar = () => {
-  const [count, setCount] = useState(2);
+  const quantity = useSelector((state) => state.cart.quantity);
   const [active, setActive] = useState(false);
 
   return (
@@ -42,7 +43,7 @@ const Navbar = () => {
       <div className={`center flex-1 gap-5`}>
         <div className="relative link center cursor-pointer">
           <span className="z-10 bg-white text-black absolute top-[-8px] right-[-8px] w-5 h-5 rounded-full center">
-            {count}
+            {quantity}
           </span>
           <Link href="/cart">
             <a>
@@ -65,9 +66,7 @@ const Navbar = () => {
       )}
       <div
         className={`transition-all ease-linear z-20 fixed top-[100px] bottom-0 max-w-sn w-[50%] right-0 bg-white text-black lg:hidden 
-        ${
-          active ? "right-0" : "-right-full"
-        }`}
+        ${active ? "right-0" : "-right-full"}`}
       >
         <ul className={` flex-col flex`}>
           {NAVBAR.map(({ title, link }, idx) => (
